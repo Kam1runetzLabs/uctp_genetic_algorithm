@@ -31,7 +31,7 @@ string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
 add_subdirectory(src)
 
-install(TARGET algorithm
+install(TARGETS algorithm
     EXPORT "${PROJECT_NAME}-targets"
     RUNTIME DESTINATION bin
     ARCHIVE DESTINATION lib
