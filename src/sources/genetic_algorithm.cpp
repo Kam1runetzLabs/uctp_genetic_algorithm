@@ -1,12 +1,13 @@
-#include <unordered_map>
-#include <algorithm>
-
 #include "genetic_algorithm.hpp"
+
+#include <algorithm>
+#include <unordered_map>
 
 static constexpr int populationSize = POPULATION_SIZE_CONST
 
-// random function
-int alg::getRandomNumber(int min, int max) {
+    // random function
+    int
+    alg::getRandomNumber(int min, int max) {
   static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
   return static_cast<int>((rand() * fraction * (max - min + 1) + min));
 }
@@ -20,12 +21,11 @@ alg::Gen::Gen(const int val) : Value(val) {}
     Value = g.GetValue();
 }*/
 
-void alg::Gen::SetValue(const int &val) {
-  Value = val;
-}
+void alg::Gen::SetValue(const int &val) { Value = val; }
 
 // Chromosome of time genes
-void alg::ChromosomeTime::Initialize(const std::vector<Block> &blocks, const std::vector<int> &AllTimes) {
+void alg::ChromosomeTime::Initialize(const std::vector<Block> &blocks,
+                                     const std::vector<int> &AllTimes) {
   TimeChromosome.reserve(blocks.size());
   for (size_t i = 0; i < blocks.size(); ++i) {
     Gen newGen(AllTimes[getRandomNumber(0, static_cast<int>(AllTimes.size()))]);
@@ -37,8 +37,10 @@ const std::vector<alg::Gen> &alg::ChromosomeTime::GetTimeGenes() {
   return TimeChromosome;
 }
 
-void alg::ChromosomeTime::NewMutationTime(const int i, const std::vector<int> &AllTimes) {
-  TimeChromosome[i].SetValue(AllTimes[getRandomNumber(0, static_cast<int>(AllTimes.size()))]);
+void alg::ChromosomeTime::NewMutationTime(const int i,
+                                          const std::vector<int> &AllTimes) {
+  TimeChromosome[i].SetValue(
+      AllTimes[getRandomNumber(0, static_cast<int>(AllTimes.size()))]);
 }
 
 void alg::ChromosomeTime::CopyParts(const std::vector<Gen> &firstPart,
@@ -56,15 +58,18 @@ void alg::ChromosomeTime::CopyParts(const std::vector<Gen> &firstPart,
 
 // Chromosome of Auditory Genes
 
-void alg::ChromosomeAuditory::Initialize(const std::vector<Block> &blocks, const std::vector<int> &AuditoryType1,
-                                         const std::vector<int> &AuditoryType2) {
+void alg::ChromosomeAuditory::Initialize(
+    const std::vector<Block> &blocks, const std::vector<int> &AuditoryType1,
+    const std::vector<int> &AuditoryType2) {
   AuditoryChromosome.reserve(blocks.size());
-  for (auto block: blocks) {
+  for (auto block : blocks) {
     if (block.subjectType == 1) {
-      Gen newGen(AuditoryType1[getRandomNumber(0, static_cast<int>(AuditoryType1.size()))]);
+      Gen newGen(AuditoryType1[getRandomNumber(
+          0, static_cast<int>(AuditoryType1.size()))]);
       AuditoryChromosome.push_back(newGen);
     } else {
-      Gen newGen(AuditoryType2[getRandomNumber(0, static_cast<int>(AuditoryType2.size()))]);
+      Gen newGen(AuditoryType2[getRandomNumber(
+          0, static_cast<int>(AuditoryType2.size()))]);
       AuditoryChromosome.push_back(newGen);
     }
   }
@@ -74,13 +79,16 @@ const std::vector<alg::Gen> &alg::ChromosomeAuditory::GetAuditoryGenes() {
   return AuditoryChromosome;
 }
 
-void alg::ChromosomeAuditory::NewMutationAuditory(const int i, const std::vector<Block> &blocks,
-                                                  const std::vector<int> &AuditoryType1,
-                                                  const std::vector<int> &AuditoryType2) {
+void alg::ChromosomeAuditory::NewMutationAuditory(
+    const int i, const std::vector<Block> &blocks,
+    const std::vector<int> &AuditoryType1,
+    const std::vector<int> &AuditoryType2) {
   if (blocks[i].subjectType == 1) {
-    AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(0, static_cast<int>(AuditoryType1.size()))]);
+    AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(
+        0, static_cast<int>(AuditoryType1.size()))]);
   } else if (blocks[i].subjectType == 2) {
-    AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(0, static_cast<int>(AuditoryType2.size()))]);
+    AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(
+        0, static_cast<int>(AuditoryType2.size()))]);
   }
 }
 
@@ -103,24 +111,27 @@ alg::Individual::Individual() {
   ChromTime = std::make_shared<ChromosomeTime>();
 }
 
-void alg::Individual::Initialize(const std::vector<Block> &blocks, const std::vector<int> &AuditoryType1,
-                                 const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
+void alg::Individual::Initialize(const std::vector<Block> &blocks,
+                                 const std::vector<int> &AuditoryType1,
+                                 const std::vector<int> &AuditoryType2,
+                                 const std::vector<int> &AllTimes) {
   CreateNewChromosomeAuditory(blocks, AuditoryType1, AuditoryType2);
   CreateNewChromosomeTime(blocks, AllTimes);
 }
 
-void alg::Individual::CreateNewChromosomeTime(const std::vector<Block> &blocks,
-                                              const std::vector<int> &AllTimes) {
+void alg::Individual::CreateNewChromosomeTime(
+    const std::vector<Block> &blocks, const std::vector<int> &AllTimes) {
   ChromTime->Initialize(blocks, AllTimes);
 }
 
-void
-alg::Individual::CreateNewChromosomeAuditory(const std::vector<Block> &blocks, const std::vector<int> &AuditoryType1,
-                                             const std::vector<int> &AuditoryType2) {
+void alg::Individual::CreateNewChromosomeAuditory(
+    const std::vector<Block> &blocks, const std::vector<int> &AuditoryType1,
+    const std::vector<int> &AuditoryType2) {
   ChromAud->Initialize(blocks, AuditoryType1, AuditoryType2);
 }
 
-std::shared_ptr<alg::ChromosomeAuditory> alg::Individual::GetAuditoryChromosome() {
+std::shared_ptr<alg::ChromosomeAuditory>
+alg::Individual::GetAuditoryChromosome() {
   return ChromAud;
 }
 
@@ -128,27 +139,34 @@ std::shared_ptr<alg::ChromosomeTime> alg::Individual::GetTimeChromosome() {
   return ChromTime;
 }
 
-void alg::Individual::Crossing(const std::shared_ptr<Individual> &Ind1, const std::shared_ptr<Individual> &Ind2,
+void alg::Individual::Crossing(const std::shared_ptr<Individual> &Ind1,
+                               const std::shared_ptr<Individual> &Ind2,
                                const std::vector<Block> &blocks) {
   int partEdge = getRandomNumber(0, blocks.size());
   ChromAud->CopyParts(Ind1->GetAuditoryChromosome()->GetAuditoryGenes(),
-                      Ind2->GetAuditoryChromosome()->GetAuditoryGenes(), partEdge);
-  ChromTime->CopyParts(Ind1->GetTimeChromosome()->GetTimeGenes(), Ind2->GetTimeChromosome()->GetTimeGenes(),
-                       partEdge);
+                      Ind2->GetAuditoryChromosome()->GetAuditoryGenes(),
+                      partEdge);
+  ChromTime->CopyParts(Ind1->GetTimeChromosome()->GetTimeGenes(),
+                       Ind2->GetTimeChromosome()->GetTimeGenes(), partEdge);
 }
 
-void alg::Individual::Mutate(const std::vector<Block> &blocks, const std::vector<int> &AuditoryType1,
-                             const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
-  ChromAud->NewMutationAuditory(getRandomNumber(0, blocks.size()), blocks, AuditoryType1, AuditoryType2);
+void alg::Individual::Mutate(const std::vector<Block> &blocks,
+                             const std::vector<int> &AuditoryType1,
+                             const std::vector<int> &AuditoryType2,
+                             const std::vector<int> &AllTimes) {
+  ChromAud->NewMutationAuditory(getRandomNumber(0, blocks.size()), blocks,
+                                AuditoryType1, AuditoryType2);
   ChromTime->NewMutationTime(getRandomNumber(0, blocks.size()), AllTimes);
 }
 
 // Population, contains all Individuals
 alg::Population::Population() : sizeIndividuals(0) {}
 
-alg::Population::Population(const std::vector<Block> &blcks, const std::vector<int> &AudType1,
+alg::Population::Population(const std::vector<Block> &blcks,
+                            const std::vector<int> &AudType1,
                             const std::vector<int> &AudType2,
-                            const std::vector<int> &AllTmes) : sizeIndividuals(0) {
+                            const std::vector<int> &AllTmes)
+    : sizeIndividuals(0) {
   blocks = blcks;
   AuditoryType1 = AudType1;
   AuditoryType2 = AudType2;
@@ -263,7 +281,8 @@ void alg::AllRules::SetRules() {
   Rules.push_back(rule3);
 }
 
-int alg::AllRules::calcFitness(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks) {
+int alg::AllRules::calcFitness(std::shared_ptr<Individual> &Ind,
+                               const std::vector<Block> &blocks) {
   if (Ind == nullptr) {
     return -1;
   }
@@ -277,15 +296,12 @@ int alg::AllRules::calcFitness(std::shared_ptr<Individual> &Ind, const std::vect
   return flawCnt;
 }
 
-void alg::AllRules::SetPenalty(int cnt) {
-  Penalty.push_back(cnt);
-}
+void alg::AllRules::SetPenalty(int cnt) { Penalty.push_back(cnt); }
 
-std::vector<int> &alg::AllRules::GetPenaltyList() {
-  return Penalty;
-}
+std::vector<int> &alg::AllRules::GetPenaltyList() { return Penalty; }
 
-void alg::AllRules::ForWordMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+void alg::AllRules::ForWordMutation(std::shared_ptr<Individual> &Ind,
+                                    const std::vector<Block> &blocks,
                                     const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
@@ -296,9 +312,11 @@ void alg::AllRules::ForWordMutation(std::shared_ptr<Individual> &Ind, const std:
   }
 }
 
-void alg::AllRules::RandomMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+void alg::AllRules::RandomMutation(std::shared_ptr<Individual> &Ind,
+                                   const std::vector<Block> &blocks,
                                    const std::vector<int> &AuditoryType1,
-                                   const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
+                                   const std::vector<int> &AuditoryType2,
+                                   const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
   }
@@ -308,11 +326,11 @@ void alg::AllRules::RandomMutation(std::shared_ptr<Individual> &Ind, const std::
   }
 }
 
-
 // Same auditory same time for one group rule
 alg::SameAudSameTime::SameAudSameTime() : R(0) {}
 
-void alg::SameAudSameTime::ForWordMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+void alg::SameAudSameTime::ForWordMutation(std::shared_ptr<Individual> &Ind,
+                                           const std::vector<Block> &blocks,
                                            const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
@@ -321,16 +339,18 @@ void alg::SameAudSameTime::ForWordMutation(std::shared_ptr<Individual> &Ind, con
   for (size_t i = 0; i < blocks.size(); ++i) {
     for (size_t j = i + 1; j < blocks.size() - 1; ++j) {
       if (Ind->GetAuditoryChromosome()->GetAuditoryGenes()[i].GetValue() ==
-          Ind->GetAuditoryChromosome()->GetAuditoryGenes()[j].GetValue() &&
+              Ind->GetAuditoryChromosome()->GetAuditoryGenes()[j].GetValue() &&
           Ind->GetTimeChromosome()->GetTimeGenes()[i].GetValue() ==
-          Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
-        Ind->GetTimeChromosome()->NewMutationTime(static_cast<int>(i), AllTimes);
+              Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
+        Ind->GetTimeChromosome()->NewMutationTime(static_cast<int>(i),
+                                                  AllTimes);
       }
     }
   }
 }
 
-int alg::SameAudSameTime::CalcRule(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks) {
+int alg::SameAudSameTime::CalcRule(std::shared_ptr<Individual> &Ind,
+                                   const std::vector<Block> &blocks) {
   if (Ind == nullptr) {
     return -1;
   }
@@ -339,9 +359,9 @@ int alg::SameAudSameTime::CalcRule(std::shared_ptr<Individual> &Ind, const std::
   for (size_t i = 0; i < blocks.size(); ++i) {
     for (size_t j = i + 1; j < blocks.size() - 1; ++j) {
       if (Ind->GetAuditoryChromosome()->GetAuditoryGenes()[i].GetValue() ==
-          Ind->GetAuditoryChromosome()->GetAuditoryGenes()[j].GetValue() &&
+              Ind->GetAuditoryChromosome()->GetAuditoryGenes()[j].GetValue() &&
           Ind->GetTimeChromosome()->GetTimeGenes()[i].GetValue() ==
-          Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
+              Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
         flawCnt++;
       }
     }
@@ -354,27 +374,29 @@ void alg::SameAudSameTime::SetR(const std::vector<Block> &blocks) {
   R = getRandomNumber(0, blocks.size());
 }
 
-void alg::SameAudSameTime::RandomMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+void alg::SameAudSameTime::RandomMutation(std::shared_ptr<Individual> &Ind,
+                                          const std::vector<Block> &blocks,
                                           const std::vector<int> &AuditoryType1,
-                                          const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
+                                          const std::vector<int> &AuditoryType2,
+                                          const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
   }
 
   SetR(blocks);
   Ind->GetTimeChromosome()->NewMutationTime(R, AllTimes);
-  Ind->GetAuditoryChromosome()->NewMutationAuditory(R, blocks, AuditoryType1, AuditoryType2);
+  Ind->GetAuditoryChromosome()->NewMutationAuditory(R, blocks, AuditoryType1,
+                                                    AuditoryType2);
 }
 
-int alg::SameAudSameTime::GetR() const {
-  return R;
-}
+int alg::SameAudSameTime::GetR() const { return R; }
 
 // Only one lesson for one group same time
 alg::SameGroupMoreBlock::SameGroupMoreBlock() : R(0) {}
 
-void alg::SameGroupMoreBlock::ForWordMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
-                                              const std::vector<int> &AllTimes) {
+void alg::SameGroupMoreBlock::ForWordMutation(
+    std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+    const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
   }
@@ -383,14 +405,16 @@ void alg::SameGroupMoreBlock::ForWordMutation(std::shared_ptr<Individual> &Ind, 
     for (size_t j = i + 1; j < blocks.size() - 1; ++j) {
       if (blocks[i].group == blocks[j].group &&
           Ind->GetTimeChromosome()->GetTimeGenes()[i].GetValue() ==
-          Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
-        Ind->GetTimeChromosome()->NewMutationTime(static_cast<int>(i), AllTimes);
+              Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
+        Ind->GetTimeChromosome()->NewMutationTime(static_cast<int>(i),
+                                                  AllTimes);
       }
     }
   }
 }
 
-int alg::SameGroupMoreBlock::CalcRule(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks) {
+int alg::SameGroupMoreBlock::CalcRule(std::shared_ptr<Individual> &Ind,
+                                      const std::vector<Block> &blocks) {
   if (Ind == nullptr) {
     return -1;
   }
@@ -400,7 +424,7 @@ int alg::SameGroupMoreBlock::CalcRule(std::shared_ptr<Individual> &Ind, const st
     for (size_t j = i + 1; j < blocks.size() - 1; ++j) {
       if (blocks[i].group == blocks[j].group &&
           Ind->GetTimeChromosome()->GetTimeGenes()[i].GetValue() ==
-          Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
+              Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
         flawCnt++;
       }
     }
@@ -412,26 +436,27 @@ void alg::SameGroupMoreBlock::SetR(const std::vector<Block> &blocks) {
   R = getRandomNumber(0, blocks.size());
 }
 
-void alg::SameGroupMoreBlock::RandomMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
-                                             const std::vector<int> &AuditoryType1,
-                                             const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
+void alg::SameGroupMoreBlock::RandomMutation(
+    std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+    const std::vector<int> &AuditoryType1,
+    const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
   }
 
   SetR(blocks);
   Ind->GetTimeChromosome()->NewMutationTime(R, AllTimes);
-  Ind->GetAuditoryChromosome()->NewMutationAuditory(R, blocks, AuditoryType1, AuditoryType2);
+  Ind->GetAuditoryChromosome()->NewMutationAuditory(R, blocks, AuditoryType1,
+                                                    AuditoryType2);
 }
 
-int alg::SameGroupMoreBlock::GetR() const {
-  return R;
-}
+int alg::SameGroupMoreBlock::GetR() const { return R; }
 
 // Teacher has only one lesson one time
 alg::SameLecMoreBlock::SameLecMoreBlock() : R(0) {}
 
-void alg::SameLecMoreBlock::ForWordMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+void alg::SameLecMoreBlock::ForWordMutation(std::shared_ptr<Individual> &Ind,
+                                            const std::vector<Block> &blocks,
                                             const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
@@ -441,14 +466,16 @@ void alg::SameLecMoreBlock::ForWordMutation(std::shared_ptr<Individual> &Ind, co
     for (size_t j = i + 1; j < blocks.size() - 1; ++j) {
       if (blocks[i].teacher == blocks[j].teacher &&
           Ind->GetTimeChromosome()->GetTimeGenes()[i].GetValue() ==
-          Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
-        Ind->GetTimeChromosome()->NewMutationTime(static_cast<int>(i), AllTimes);
+              Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
+        Ind->GetTimeChromosome()->NewMutationTime(static_cast<int>(i),
+                                                  AllTimes);
       }
     }
   }
 }
 
-int alg::SameLecMoreBlock::CalcRule(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks) {
+int alg::SameLecMoreBlock::CalcRule(std::shared_ptr<Individual> &Ind,
+                                    const std::vector<Block> &blocks) {
   if (Ind == nullptr) {
     return -1;
   }
@@ -458,7 +485,7 @@ int alg::SameLecMoreBlock::CalcRule(std::shared_ptr<Individual> &Ind, const std:
     for (size_t j = i + 1; j < blocks.size() - 1; ++j) {
       if (blocks[i].teacher == blocks[j].teacher &&
           Ind->GetTimeChromosome()->GetTimeGenes()[i].GetValue() ==
-          Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
+              Ind->GetTimeChromosome()->GetTimeGenes()[j].GetValue()) {
         flawCnt++;
       }
     }
@@ -470,18 +497,18 @@ void alg::SameLecMoreBlock::SetR(const std::vector<Block> &blocks) {
   R = getRandomNumber(0, blocks.size());
 }
 
-void alg::SameLecMoreBlock::RandomMutation(std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
-                                           const std::vector<int> &AuditoryType1,
-                                           const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
+void alg::SameLecMoreBlock::RandomMutation(
+    std::shared_ptr<Individual> &Ind, const std::vector<Block> &blocks,
+    const std::vector<int> &AuditoryType1,
+    const std::vector<int> &AuditoryType2, const std::vector<int> &AllTimes) {
   if (Ind == nullptr) {
     return;
   }
 
   SetR(blocks);
   Ind->GetTimeChromosome()->NewMutationTime(R, AllTimes);
-  Ind->GetAuditoryChromosome()->NewMutationAuditory(R, blocks, AuditoryType1, AuditoryType2);
+  Ind->GetAuditoryChromosome()->NewMutationAuditory(R, blocks, AuditoryType1,
+                                                    AuditoryType2);
 }
 
-int alg::SameLecMoreBlock::GetR() const {
-  return R;
-}
+int alg::SameLecMoreBlock::GetR() const { return R; }
