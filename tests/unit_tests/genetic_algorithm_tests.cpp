@@ -3,6 +3,8 @@
 
 #include <genetic_algorithm.hpp>
 
+using namespace alg;
+
 TEST(GeneticALgorithmTests, PopulationWorkTest) {
   std::vector<Block> blocks;
   std::vector<int> AuditoryType1;
