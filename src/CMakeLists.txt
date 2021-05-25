@@ -1,4 +1,4 @@
-add_library(algorithm SHARED
+add_library(algorithm STATIC
         include/data_for_run.hpp
         include/genetic_algorithm.hpp
         sources/genetic_algorithm.cpp
