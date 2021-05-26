@@ -6,8 +6,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "data_for_run.hpp"
-
 #define POPULATION_SIZE_CONST 960;
 #define ITERATIONS_NUMBER 18;
 
