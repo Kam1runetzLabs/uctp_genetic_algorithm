@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <unordered_map>
 
-static constexpr int populationSize = POPULATION_SIZE_CONST;
-static constexpr int iterationsNumber = ITERATIONS_NUMBER;
+static constexpr int populationSize = POPULATION_SIZE_CONST
+static constexpr int iterationsNumber = ITERATIONS_NUMBER
 
 // random function
 int alg::getRandomNumber(int min, int max) {
