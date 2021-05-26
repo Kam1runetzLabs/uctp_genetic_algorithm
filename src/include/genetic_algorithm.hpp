@@ -7,7 +7,7 @@
 #include <vector>
 
 #define POPULATION_SIZE_CONST 960;
-#define ITERATIONS_NUMBER 18;
+#define ITERATIONS_NUMBER 16;
 
 namespace alg {
 int getRandomNumber(int min, int max);
