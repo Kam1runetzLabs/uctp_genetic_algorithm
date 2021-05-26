@@ -124,7 +124,7 @@ class Population {
 
   void InitializeInds(int population);
 
-  std::shared_ptr<Individual> Iterations(int iterations, int population);
+  std::shared_ptr<Individual> Iterations(int population, int iterations);
 
   void NewPopulation();
 

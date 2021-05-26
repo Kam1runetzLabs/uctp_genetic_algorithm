@@ -182,7 +182,7 @@ void alg::Population::InitializeInds(int population) {
   }
 }
 
-std::shared_ptr<alg::Individual> alg::Population::Iterations(int iterations = iterationsNumber, int population = populationSize) {
+std::shared_ptr<alg::Individual> alg::Population::Iterations(int population = populationSize, int iterations = iterationsNumber) {
   InitializeInds(population);
   for (int i = 0; i < iterations; ++i) {
     NewPopulation();
