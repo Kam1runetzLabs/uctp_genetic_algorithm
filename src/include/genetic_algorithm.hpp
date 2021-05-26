@@ -8,10 +8,21 @@
 
 #include "data_for_run.hpp"
 
-#define POPULATION_SIZE_CONST 60;
+#define POPULATION_SIZE_CONST 960;
+#define ITERATIONS_NUMBER 18;
 
 namespace alg {
 int getRandomNumber(int min, int max);
+
+struct Block {
+  int group;
+  int subject;
+  int subjectType;
+  int teacher;
+
+  Block(int g, int s, int st, int t)
+      : group(g), subject(s), subjectType(st), teacher(t) {}
+};
 
 class Gen {
   int Value;
