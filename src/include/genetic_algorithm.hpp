@@ -122,9 +122,9 @@ class Population {
                       const std::vector<int> &AudType2,
                       const std::vector<int> &AllTmes);
 
-  void InitializeInds();
+  void InitializeInds(int population);
 
-  std::shared_ptr<Individual> Iterations();
+  std::shared_ptr<Individual> Iterations(int iterations, int population);
 
   void NewPopulation();
 

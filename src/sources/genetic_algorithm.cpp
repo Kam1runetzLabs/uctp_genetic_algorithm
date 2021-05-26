@@ -173,8 +173,8 @@ alg::Population::Population(const std::vector<Block> &blcks,
   AllTimes = AllTmes;
 }
 
-void alg::Population::InitializeInds() {
-  for (int i = 0; i < populationSize; ++i) {
+void alg::Population::InitializeInds(int population) {
+  for (int i = 0; i < population; ++i) {
     std::shared_ptr<Individual> newIndividual(new Individual);
     newIndividual->Initialize(blocks, AuditoryType1, AuditoryType2, AllTimes);
     Individuals.push_back(newIndividual);
@@ -182,9 +182,9 @@ void alg::Population::InitializeInds() {
   }
 }
 
-std::shared_ptr<alg::Individual> alg::Population::Iterations() {
-  InitializeInds();
-  for (int i = 0; i < iterationsNumber; ++i) {
+std::shared_ptr<alg::Individual> alg::Population::Iterations(int iterations = iterationsNumber, int population = populationSize) {
+  InitializeInds(population);
+  for (int i = 0; i < iterations; ++i) {
     NewPopulation();
     Crossingover();
     Mutation();
