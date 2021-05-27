@@ -63,11 +63,11 @@ void alg::ChromosomeAuditory::Initialize(
     const std::vector<int> &AuditoryType2) {
   AuditoryChromosome.reserve(blocks.size());
   for (auto block : blocks) {
-    if (block.subjectType == 1) {
+    if (block.subjectType == 0) {
       Gen newGen(AuditoryType1[getRandomNumber(
           0, static_cast<int>(AuditoryType1.size()) - 1)]);
       AuditoryChromosome.push_back(newGen);
-    } else {
+    } else if (block.subjectType == 1) {
       Gen newGen(AuditoryType2[getRandomNumber(
           0, static_cast<int>(AuditoryType2.size()) - 1)]);
       AuditoryChromosome.push_back(newGen);
