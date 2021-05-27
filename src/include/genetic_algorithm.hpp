@@ -13,14 +13,14 @@ namespace alg {
 int getRandomNumber(int min, int max);
 
 struct Block {
-  int id;
+  int blockId;
   int group;
   int subject;
   int subjectType;
   int teacher;
 
-  Block(int id, int g, int s, int st, int t)
-      : id(id), group(g), subject(s), subjectType(st), teacher(t) {}
+  Block(int b, int g, int s, int st, int t)
+      : blockId(b), group(g), subject(s), subjectType(st), teacher(t) {}
 };
 
 class Gen {
