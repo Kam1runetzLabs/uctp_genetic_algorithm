@@ -83,10 +83,10 @@ void alg::ChromosomeAuditory::NewMutationAuditory(
     const int i, const std::vector<Block> &blocks,
     const std::vector<int> &AuditoryType1,
     const std::vector<int> &AuditoryType2) {
-  if (blocks[i].subjectType == 1) {
+  if (blocks[i].subjectType == 0) {
     AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(
         0, static_cast<int>(AuditoryType1.size()))]);
-  } else if (blocks[i].subjectType == 2) {
+  } else if (blocks[i].subjectType == 1) {
     AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(
         0, static_cast<int>(AuditoryType2.size()))]);
   }
