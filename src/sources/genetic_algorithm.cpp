@@ -87,7 +87,7 @@ void alg::ChromosomeAuditory::NewMutationAuditory(
     AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(
         0, static_cast<int>(AuditoryType1.size() - 1))]);
   } else if (blocks[i].subjectType == 1) {
-    AuditoryChromosome[i].SetValue(AuditoryType1[getRandomNumber(
+    AuditoryChromosome[i].SetValue(AuditoryType2[getRandomNumber(
         0, static_cast<int>(AuditoryType2.size() - 1))]);
   }
 }
